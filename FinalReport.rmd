@@ -40,7 +40,22 @@ If not, then whose view differs from whom??
 
 <!--Graphical results here.  Make sure to show your code.  Provide appropriate labels for axes, giving units if possible, and provide a good title for the graph, too.  Use the graphical results to describe the patterns if any that exist in the data as focused toward the research question. Bottom line is to explain the features of the graph that are relevant to conforming or departing to what is expected by your null hypothesis !-->
 
+```{r}
+dd3 <- mydata %>% group_by(cappun,race) %>% summarize(count=n()) %>% mutate(prcnt=count/sum(count))
+ 
+ 
+ # the group_by followed by summarize(count=n())
+ 
+basicC <- ggplot(dd3,aes(x=race,y=count,fill=cappun))
+basicC + geom_bar(stat="identity",position="dodge")
+ 
+ #Now for percentage plot
+ 
+basicCC <- ggplot(dd3,aes(x=race,y=prcnt*100,fill=cappun)) 
+basicCC + geom_bar(stat="identity", position = "dodge")
+```
 
+The data reveals distinct mathematical disparities in attitudes toward capital punishment across racial groups. Black respondents show the strongest opposition, with opposition counts far exceeding support. White respondents display the highest favorability, with support clearly outpacing opposition. The "other" group trends toward balance but still leans slightly toward opposition. The most significant contrasts appear between white and Black respondents—whites strongly in favor, Blacks strongly opposed—while the "other" group reflects a smaller yet consistent tilt toward opposition. These patterns underscore measurable differences in public sentiment by race.
 
 ## Now with LESS data (more variables give less data due to NA's) create the approate graphic displays to answer the question.
 
@@ -53,17 +68,22 @@ If not, then whose view differs from whom??
 <!--Numerical results go here. Use the numerical results to describe the patterns if any that exist in the data as focused toward the research question!-->
 
 
+```{r}
+table2 <- xtabs(~cappun + race, data=mydata)
+```
 
-
-
+The data shows the white group favors capital punishment with a ratio of about 2:1, meaning for every two people in favor, one is opposed. The black group is more evenly split but slightly against, suggesting their opposition is marginally higher than support. The "other" group opposes capital punishment more strongly, with a ratio of around 3:2, indicating for every three people opposed, two favor it. These ratios highlight differing levels of support and opposition across racial groups.
 
 ## Inferential Results
 
 <!--State hypothesis clearly.  Make sure your discussion of the inferential test covers all the aspects that the test output produces, such as test statistic, p-value etc.  Make a decision about the null hypothesis, explain the assumptions on which the selected test/procedure was based, and why the chosen procedure satisfys the assumptions and is appropriate to answer the research question!-->
 
 `
-
-
+```{r}
+chisq.test(table2)
+```
+ 
+The p-value of 0.00005896 indicates a highly significant association between the variables, suggesting the observed differences are unlikely due to random chance. This strong result warrants further analysis. Conducting a Fisher’s exact test will help assess the statistical significance and relationships between groups with greater precision, offering a more detailed understanding of the patterns within the data.
 
 # Discussion and Conclusion
 
